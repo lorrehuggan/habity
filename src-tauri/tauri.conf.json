@@ -13,7 +13,7 @@
     "windows": [
       {
         "title": "habbity",
-        "width": 384,
+        "width": 380,
         "height": 720,
         "resizable": false,
         "decorations": false
