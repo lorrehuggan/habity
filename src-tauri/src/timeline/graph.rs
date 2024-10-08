@@ -31,7 +31,7 @@ impl Timeline {
                 .push(date.format("%Y-%m-%d").to_string());
         }
 
-        Timeline { days }
+        Self { days }
     }
 }
 
