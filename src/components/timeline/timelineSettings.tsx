@@ -1,6 +1,6 @@
 import { createMutation } from "@tanstack/solid-query";
 import { Trash } from "lucide-solid";
-import { type JSX, createSignal } from "solid-js";
+import { type JSX, Show, createSignal } from "solid-js";
 import { archiveHabit } from "~/actions/habits";
 import {
 	Dialog,
@@ -35,6 +35,11 @@ function Info(props: ComponentProps) {
 			>
 				<p>Completed</p>
 			</div>
+			<Show when={props.habit.category !== "None"}>
+				<div>
+					<p class="text-xs">{props.habit.category}</p>
+				</div>
+			</Show>
 			<div
 				style={{
 					border: `1px solid hsla(${getHabitThemeColor(props.habit.color)},0.7)`,

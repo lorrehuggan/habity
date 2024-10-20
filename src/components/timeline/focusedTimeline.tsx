@@ -163,9 +163,9 @@ export default function FocusedTimeline(props: Props) {
 					<Editable.Root
 						name="name"
 						activationMode="dblclick"
-						onFocusOutside={() => handleUpdateCommit()}
+						// onFocusOutside={() => handleUpdateCommit()}
 						onEditChange={(e) => setEditing(e.edit)}
-						onPointerDownOutside={() => handleUpdateCommit()}
+						// onPointerDownOutside={() => handleUpdateCommit()}
 						onValueChange={(e) => {
 							setUpdatedHabit("name", e.value);
 						}}
@@ -185,9 +185,9 @@ export default function FocusedTimeline(props: Props) {
 					<Editable.Root
 						name="description"
 						activationMode="dblclick"
-						onFocusOutside={() => handleUpdateCommit()}
+						// onFocusOutside={() => handleUpdateCommit()}
 						onEditChange={(e) => setEditing(e.edit)}
-						onPointerDownOutside={() => handleUpdateCommit()}
+						// onPointerDownOutside={() => handleUpdateCommit()}
 						onValueChange={(e) => {
 							setUpdatedHabit("description", e.value);
 						}}

@@ -7,7 +7,7 @@ export default function Titlebar() {
 	return (
 		<div
 			data-tauri-drag-region
-			class="fixed top-0 left-0 z-[9999] flex h-8 w-screen items-center justify-between bg-black px-2 text-muted-foreground"
+			class="fixed top-0 left-0 z-[9999] flex h-8 w-screen items-center justify-between rounded-t-[8px] bg-black px-2 text-muted-foreground"
 		>
 			<div class="font-bold text-xs">Habity</div>
 			<div class="flex items-center">
