@@ -6,6 +6,7 @@ export default function Page() {
 		<MainLayout>
 			<A href="/">Home</A>
 			<h1>Settings</h1>
+			<A href="/archived">Archived</A>
 		</MainLayout>
 	);
 }

@@ -28,6 +28,8 @@ pub fn run() {
             controllers::habits::get_habits,
             controllers::habits::update_habit,
             controllers::habits::archive_habit,
+            controllers::habits::get_archived_habits,
+            controllers::habits::delete_habit,
             // commits
             controllers::commit::create_commit,
             controllers::commit::get_commits,

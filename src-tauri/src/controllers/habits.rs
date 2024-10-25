@@ -135,3 +135,41 @@ pub async fn update_habit(
         error: false,
     })
 }
+
+#[tauri::command]
+pub async fn get_archived_habits(state: tauri::State<'_, AppState>) -> Result<Vec<Habit>, String> {
+    let db = &state.db;
+
+    let habits: Vec<Habit> = sqlx::query_as("SELECT * FROM habits")
+        .fetch_all(db)
+        .await
+        .map_err(|e| format!("Failed to get todos {}", e))?;
+
+    let habits = habits
+        .into_iter()
+        .filter(|habit| habit.status == "Archived")
+        .collect();
+
+    Ok(habits)
+}
+
+#[tauri::command]
+pub async fn delete_habit(
+    state: tauri::State<'_, AppState>,
+    id: String,
+) -> Result<TauriResponse, String> {
+    let db = &state.db;
+
+    let query = "DELETE FROM habits WHERE id = $1";
+
+    sqlx::query(query)
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| format!("Failed to delete habit {}", e))?;
+
+    Ok(TauriResponse {
+        message: "success".to_string(),
+        error: false,
+    })
+}

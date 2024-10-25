@@ -25,3 +25,9 @@ export async function updateHabit(habit: Habit) {
 
 	return response;
 }
+
+export async function getArchivedHabits() {
+	const response = await invoke<Array<Habit>>("get_archived_habits");
+
+	return response;
+}
