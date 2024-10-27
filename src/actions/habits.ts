@@ -31,3 +31,15 @@ export async function getArchivedHabits() {
 
 	return response;
 }
+
+export async function deleteHabit(id: string) {
+	const response = await invoke<TauriResponse>("delete_habit", { id });
+
+	return response;
+}
+
+export async function restoreHabit(id: string) {
+	const response = await invoke<TauriResponse>("restore_habit", { id });
+
+	return response;
+}

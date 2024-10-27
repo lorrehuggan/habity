@@ -160,13 +160,43 @@ pub async fn delete_habit(
 ) -> Result<TauriResponse, String> {
     let db = &state.db;
 
-    let query = "DELETE FROM habits WHERE id = $1";
+    let query1 = "DELETE FROM commits WHERE habit_id = $1";
+    let query2 = "DELETE FROM habits WHERE id = $1";
+
+    //TODO: Add transaction
+
+    sqlx::query(query1)
+        .bind(&id)
+        .execute(db)
+        .await
+        .map_err(|e| format!("Failed to delete commits {}", e))?;
+
+    sqlx::query(query2)
+        .bind(id)
+        .execute(db)
+        .await
+        .map_err(|e| format!("Failed to delete habit {}", e))?;
+
+    Ok(TauriResponse {
+        message: "success".to_string(),
+        error: false,
+    })
+}
+
+#[tauri::command]
+pub async fn restore_habit(
+    state: tauri::State<'_, AppState>,
+    id: String,
+) -> Result<TauriResponse, String> {
+    let db = &state.db;
+
+    let query = "UPDATE habits SET status = 'Active' WHERE id = $1";
 
     sqlx::query(query)
         .bind(id)
         .execute(db)
         .await
-        .map_err(|e| format!("Failed to delete habit {}", e))?;
+        .expect("Failed to restore habit");
 
     Ok(TauriResponse {
         message: "success".to_string(),

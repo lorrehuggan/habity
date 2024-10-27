@@ -14,7 +14,7 @@ export default function Header() {
 							<Settings />
 						</A>
 					</Match>
-					<Match when={location.pathname === "/settings"}>
+					<Match when={location.pathname !== "/"}>
 						<A href="/">
 							<Home />
 						</A>
