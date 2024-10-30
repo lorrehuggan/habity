@@ -1,4 +1,4 @@
-import { Home, Plus, Settings } from "lucide-solid";
+import { ArrowLeft, Home, Plus, Settings } from "lucide-solid";
 import AddHabitMenu from "../global/addHabit/addHabitMenu";
 import { A, useLocation } from "@solidjs/router";
 import { Match, Switch } from "solid-js";
@@ -12,6 +12,11 @@ export default function Header() {
 					<Match when={location.pathname === "/"}>
 						<A href="/settings">
 							<Settings />
+						</A>
+					</Match>
+					<Match when={location.pathname === "/archived"}>
+						<A href="/settings">
+							<ArrowLeft />
 						</A>
 					</Match>
 					<Match when={location.pathname !== "/"}>

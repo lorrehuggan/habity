@@ -3,12 +3,15 @@ mod database;
 mod timeline;
 mod tools;
 
+use std::path::PathBuf;
+
 use database::store;
 use sqlx::{Pool, Sqlite};
-use tauri::Manager as _;
+use tauri::Manager;
 
 struct AppState {
     db: Pool<Sqlite>,
+    settings_dir: PathBuf,
 }
 
 pub fn run() {
@@ -16,7 +19,10 @@ pub fn run() {
         .setup(|app| {
             tauri::async_runtime::block_on(async {
                 let db = store::setup_db(app).await;
-                let state = AppState { db };
+                let mut settings_dir = app.path().app_local_data_dir().unwrap();
+                settings_dir.push("settings.json");
+
+                let state = AppState { db, settings_dir };
                 app.manage(state);
             });
             Ok(())
@@ -37,6 +43,9 @@ pub fn run() {
             controllers::commit::delete_commit,
             // timeline
             timeline::graph::create_timeline,
+            // settings
+            controllers::settings::get_settings,
+            controllers::settings::update_settings,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri app");
