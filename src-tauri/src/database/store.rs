@@ -8,8 +8,6 @@ pub async fn setup_db(app: &App) -> Pool<Sqlite> {
 
     path.push("db.sqlite");
 
-    println!("Database path: {:?}", path);
-
     let result = OpenOptions::new().create_new(true).write(true).open(&path);
 
     match result {

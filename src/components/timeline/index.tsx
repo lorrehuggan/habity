@@ -14,10 +14,11 @@ import { createCommit, deleteCommit, getCommits } from "~/actions/commits";
 import { initTimeline } from "~/actions/timeline";
 import { Button } from "~/components/ui/button";
 import { queryClient } from "~/lib/providers/queryClientProvider";
-import { getHabitThemeColor } from "~/lib/utils";
+import { getHabitThemeColor, isToday } from "~/lib/utils";
 import type { Commit } from "~/types/Commits";
 import type { Habit } from "~/types/Habit";
 import TimelineSettings from "./timelineSettings";
+import { useSettingsStore } from "~/context/store";
 
 interface Props {
 	habit: Habit;
@@ -32,6 +33,8 @@ interface NodeProps {
 }
 
 function Node(props: NodeProps) {
+	const settingsStore = useSettingsStore((state) => state);
+
 	return (
 		<div
 			style={{
@@ -41,6 +44,12 @@ function Node(props: NodeProps) {
 						? `hsla(${getHabitThemeColor(props.color)},1)`
 						: `hsla(${getHabitThemeColor(props.color)},0.25)`,
 				cursor: props.commit?.status === "completed" ? "pointer" : "default",
+				border:
+					settingsStore.settings.highlight_current_day &&
+					isToday(props.date) &&
+					!props.newCommit()
+						? "1px solid white"
+						: "none",
 			}}
 			data-date={props.date}
 			class="size-3 rounded-[2px] opacity-30"
@@ -52,6 +61,7 @@ export default function Timeline(props: Props) {
 	const [timeline, setTimeline] = createStore<Array<string[]>>([]);
 	const [commits, setCommits] = createSignal<Commit[]>([]);
 	const [newCommit, setNewCommit] = createSignal(false);
+	const settingsStore = useSettingsStore((state) => state);
 
 	const query = createQuery(() => ({
 		queryKey: [`commit-${props.habit.id}`],
@@ -83,7 +93,9 @@ export default function Timeline(props: Props) {
 	});
 
 	onMount(async () => {
-		setTimeline(await initTimeline);
+		setTimeline(
+			await initTimeline(settingsStore.settings.week_start_on_sunday),
+		);
 	});
 
 	function handleCommit() {
