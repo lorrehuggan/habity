@@ -1,5 +1,5 @@
 import { createQuery } from "@tanstack/solid-query";
-import { onMount } from "solid-js";
+import { createEffect } from "solid-js";
 import { getSettings } from "~/actions/settings";
 import MainLayout from "~/components/layouts/mainLayout";
 import Timelines from "~/components/timelines";
@@ -12,7 +12,7 @@ export default function Page() {
 		queryFn: getSettings,
 	}));
 
-	onMount(() => {
+	createEffect(() => {
 		query.data && settingsStore.setSettings(query.data);
 	});
 

@@ -19,7 +19,7 @@ import { queryClient } from "~/lib/providers/queryClientProvider";
 import { getHabitThemeColor, habitThemes } from "~/lib/utils";
 import type { Habit } from "~/types/Habit";
 import type { HabitCategory } from "~/types/HabitCategory";
-import { setOpenMenu } from "./addHabitMenu";
+import { useMenuStore } from "~/context/menuStore";
 
 interface FormErrorProps {
 	message: string;
@@ -45,6 +45,8 @@ const categories: HabitCategory[] = [
 ];
 
 export default function AddHabitForm() {
+	const menu = useMenuStore((state) => state);
+
 	const mutation = createMutation(() => ({
 		mutationKey: ["create-habit"],
 		mutationFn: createHabit,
@@ -68,7 +70,7 @@ export default function AddHabitForm() {
 			mutation.mutateAsync(habit).then((response) => {
 				if (response.message === "success") {
 					queryClient.invalidateQueries({ queryKey: ["all-habits"] });
-					setOpenMenu(false);
+					menu().setMenu(false);
 					return;
 				}
 			});
@@ -302,7 +304,7 @@ export default function AddHabitForm() {
 									Color
 								</Label>
 								<RadioGroup
-									class="mx-auto mt-1 flex w-9/12 items-center justify-between"
+									class="mx-auto mt-1 flex max-w-9/12 flex-wrap items-center justify-between"
 									name={field().name}
 									value={field().state.value}
 									onChange={(e: string) => {

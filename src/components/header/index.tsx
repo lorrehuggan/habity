@@ -11,25 +11,34 @@ export default function Header() {
 				<Switch>
 					<Match when={location.pathname === "/"}>
 						<A href="/settings">
-							<Settings />
+							<Settings size={18} />
 						</A>
 					</Match>
-					<Match when={location.pathname === "/archived"}>
+					<Match when={location.pathname === "/settings/archived"}>
 						<A href="/settings">
-							<ArrowLeft />
+							<ArrowLeft size={18} />
+						</A>
+					</Match>
+					<Match when={location.pathname === "/settings/general"}>
+						<A href="/settings">
+							<ArrowLeft size={18} />
 						</A>
 					</Match>
 					<Match when={location.pathname !== "/"}>
 						<A href="/">
-							<Home />
+							<Home size={18} />
 						</A>
 					</Match>
 				</Switch>
-				<AddHabitMenu>
-					<button type="button">
-						<Plus />
-					</button>
-				</AddHabitMenu>
+				<Switch>
+					<Match when={location.pathname === "/"}>
+						<AddHabitMenu>
+							<button type="button">
+								<Plus size={18} />
+							</button>
+						</AddHabitMenu>
+					</Match>
+				</Switch>
 			</nav>
 		</div>
 	);

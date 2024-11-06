@@ -7,5 +7,5 @@ export async function getSettings() {
 }
 
 export async function updateSettings(settings: Settings) {
-	await invoke("update_settings", settings);
+	await invoke("update_settings", { settings });
 }

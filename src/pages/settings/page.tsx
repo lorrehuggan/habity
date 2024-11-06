@@ -4,7 +4,6 @@ import {
 	Archive,
 	ArrowRight,
 	Database,
-	Paintbrush,
 	Settings,
 	SprayCan,
 } from "lucide-solid";
@@ -20,7 +19,7 @@ interface LinkProps {
 
 function Link(props: LinkProps) {
 	return (
-		<div class="flex min-w-full rounded border-[1px] border-foreground/20 p-2">
+		<div class="flex min-w-full rounded border-[1px] border-foreground/20 p-2 transition-colors duration-200 ease-out hover:bg-foreground/5">
 			<A
 				class="flex w-full items-center justify-between text-sm"
 				href={`/settings/${props.link}`}
@@ -41,25 +40,25 @@ export default function Page() {
 			<h1 class="mb-4 text-center">Settings</h1>
 			<ul class="space-y-2">
 				<Link
-					link="/general"
+					link="general"
 					color="bg-pink-500"
 					icon={<Settings size={16} />}
 					name="General"
 				/>
 				<Link
-					link="/theme"
+					link="theme"
 					color="bg-amber-500"
 					icon={<SprayCan size={16} />}
 					name="Theme"
 				/>
 				<Link
-					link="/archived"
+					link="archived"
 					color="bg-cyan-500"
 					icon={<Archive size={16} />}
 					name="Archived Habits"
 				/>
 				<Link
-					link="/import-export"
+					link="import-export"
 					color="bg-emerald-500"
 					icon={<Database size={16} />}
 					name="Data Import/Export"

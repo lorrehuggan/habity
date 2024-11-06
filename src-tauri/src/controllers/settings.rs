@@ -23,7 +23,6 @@ impl Settings {
     }
     pub fn load(state: tauri::State<'_, AppState>) -> Result<Self, io::Error> {
         let settings_dir = state.settings_dir.clone();
-        println!("{:?}", settings_dir);
 
         if !settings_dir.exists() {
             println!("Settings file does not exist, creating new settings file");

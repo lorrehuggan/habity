@@ -1,12 +1,12 @@
 import { createMutation, createQuery } from "@tanstack/solid-query";
 import { type JSX, Match } from "solid-js";
 import { Switch } from "solid-js";
-import { deleteHabit, getArchivedHabits, restoreHabit } from "~/actions/habits";
-import { Button } from "../ui/button";
 import { For } from "solid-js";
+import { deleteHabit, getArchivedHabits, restoreHabit } from "~/actions/habits";
 import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
-import type { Habit } from "~/types/Habit";
 import { queryClient } from "~/lib/providers/queryClientProvider";
+import type { Habit } from "~/types/Habit";
+import { Button } from "../ui/button";
 
 interface DeleteHabitDialogProps {
 	habit: Habit;
@@ -76,9 +76,7 @@ export default function Archived() {
 					<Switch>
 						<Match when={!query.data?.length}>
 							<div class="flex w-full flex-col items-center justify-center">
-								<p class="mb-4">
-									You currently dont have any archived habits setup.
-								</p>
+								<p class="mb-4">You currently dont have any archived habits.</p>
 							</div>
 						</Match>
 						<Match when={query.data}>
@@ -86,7 +84,7 @@ export default function Archived() {
 								{(habit) => {
 									return (
 										<div class="flex w-full items-center justify-between rounded-lg border-[1px] border-foreground/10 bg-muted/20 p-4">
-											<p class="text-sm">{habit.name}</p>
+											<p class="line-clamp-1 text-sm">{habit.name}</p>
 											<div class="flex items-center gap-2">
 												<Button
 													onClick={() => {

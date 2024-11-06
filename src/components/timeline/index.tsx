@@ -14,47 +14,14 @@ import { createCommit, deleteCommit, getCommits } from "~/actions/commits";
 import { initTimeline } from "~/actions/timeline";
 import { Button } from "~/components/ui/button";
 import { queryClient } from "~/lib/providers/queryClientProvider";
-import { getHabitThemeColor, isToday } from "~/lib/utils";
 import type { Commit } from "~/types/Commits";
 import type { Habit } from "~/types/Habit";
 import TimelineSettings from "./timelineSettings";
 import { useSettingsStore } from "~/context/store";
+import Node from "./node";
 
 interface Props {
 	habit: Habit;
-}
-
-interface NodeProps {
-	commit: Commit | undefined;
-	date: string;
-	habitID: string;
-	color: string;
-	newCommit: () => boolean;
-}
-
-function Node(props: NodeProps) {
-	const settingsStore = useSettingsStore((state) => state);
-
-	return (
-		<div
-			style={{
-				"background-color":
-					props.commit?.status === "completed" ||
-					(props.newCommit() && dayjs().isSame(dayjs(props.date), "day"))
-						? `hsla(${getHabitThemeColor(props.color)},1)`
-						: `hsla(${getHabitThemeColor(props.color)},0.25)`,
-				cursor: props.commit?.status === "completed" ? "pointer" : "default",
-				border:
-					settingsStore.settings.highlight_current_day &&
-					isToday(props.date) &&
-					!props.newCommit()
-						? "1px solid white"
-						: "none",
-			}}
-			data-date={props.date}
-			class="size-3 rounded-[2px] opacity-30"
-		/>
-	);
 }
 
 export default function Timeline(props: Props) {

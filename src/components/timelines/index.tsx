@@ -4,9 +4,11 @@ import { getHabits } from "~/actions/habits";
 import { For, Match, Switch } from "solid-js";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-solid";
-import { setOpenMenu } from "../global/addHabit/addHabitMenu";
+import { useMenuStore } from "~/context/menuStore";
 
 export default function Timelines() {
+	const menu = useMenuStore((state) => state);
+
 	const query = createQuery(() => ({
 		queryKey: ["all-habits"],
 		queryFn: getHabits,
@@ -26,7 +28,7 @@ export default function Timelines() {
 						<Match when={!query.data?.length}>
 							<div class="flex w-full flex-col items-center justify-center">
 								<p class="mb-4">You currently dont have any habits setup.</p>
-								<Button onClick={() => setOpenMenu(true)}>
+								<Button onClick={() => menu().setMenu(true)}>
 									<Plus class="mr-2" /> Add Habit
 								</Button>
 							</div>

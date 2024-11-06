@@ -1,6 +1,6 @@
 import { createMutation, createQuery } from "@tanstack/solid-query";
 import dayjs from "dayjs";
-import { Check, CircleCheckBig, Crown } from "lucide-solid";
+import { Check, Crown } from "lucide-solid";
 import {
 	For,
 	Match,
@@ -11,47 +11,18 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { createCommit, deleteCommit, getCommits } from "~/actions/commits";
-import { createTimeline, initTimeline } from "~/actions/timeline";
+import { initTimeline } from "~/actions/timeline";
 import { Button } from "~/components/ui/button";
 import { queryClient } from "~/lib/providers/queryClientProvider";
-import { getHabitThemeColor } from "~/lib/utils";
 import type { Commit } from "~/types/Commits";
 import type { Habit } from "~/types/Habit";
 import { Editable } from "@ark-ui/solid/editable";
 import { updateHabit } from "~/actions/habits";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "~/components/ui/tooltip";
+import { useSettingsStore } from "~/context/store";
+import Node from "./node";
 
 interface Props {
 	habit: Habit;
-}
-
-interface NodeProps {
-	commit: Commit | undefined;
-	date: string;
-	habitID: string;
-	color: string;
-	newCommit: () => boolean;
-}
-
-function Node(props: NodeProps) {
-	return (
-		<div
-			style={{
-				"background-color":
-					props.commit?.status === "completed" ||
-					(props.newCommit() && dayjs().isSame(dayjs(props.date), "day"))
-						? `hsla(${getHabitThemeColor(props.color)},1)`
-						: `hsla(${getHabitThemeColor(props.color)},0.25)`,
-				cursor: props.commit?.status === "completed" ? "pointer" : "default",
-			}}
-			data-date={props.date}
-			class="size-3 rounded-[2px] opacity-30"
-		/>
-	);
 }
 
 export default function FocusedTimeline(props: Props) {
@@ -62,9 +33,7 @@ export default function FocusedTimeline(props: Props) {
 	const [updatedHabit, setUpdatedHabit] = createStore<Habit>({
 		...props.habit,
 	});
-	createEffect(() => {
-		console.log(updatedHabit);
-	});
+	const settingsStore = useSettingsStore((state) => state);
 
 	const query = createQuery(() => ({
 		queryKey: [`commit-${props.habit.id}`],
@@ -113,7 +82,9 @@ export default function FocusedTimeline(props: Props) {
 	});
 
 	onMount(async () => {
-		setTimeline(await initTimeline);
+		setTimeline(
+			await initTimeline(settingsStore.settings.week_start_on_sunday),
+		);
 	});
 
 	function handleCommit() {
