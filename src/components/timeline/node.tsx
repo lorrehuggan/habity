@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
+import { createMemo } from "solid-js";
 import { useSettingsStore } from "~/context/store";
 import { getHabitThemeColor, isToday } from "~/lib/utils";
 import type { Commit } from "~/types/Commits";
 
 interface NodeProps {
-	commit: Commit | undefined;
+	commits: Commit[] | undefined;
 	date: string;
 	habitID: string;
 	color: string;
@@ -14,15 +15,22 @@ interface NodeProps {
 export default function Node(props: NodeProps) {
 	const settingsStore = useSettingsStore((state) => state);
 
+	const commits = createMemo(() => {
+		return props.commits?.find((commit) =>
+			dayjs(commit.created).isSame(dayjs(props.date), "day"),
+		);
+	});
+
 	return (
 		<div
 			style={{
 				"background-color":
-					props.commit?.status === "completed" ||
+					commits()?.status === "completed" ||
 					(props.newCommit() && dayjs().isSame(dayjs(props.date), "day"))
-						? `hsla(${getHabitThemeColor(props.color)},2)`
-						: `hsla(${getHabitThemeColor(props.color)},0.15)`,
-				cursor: props.commit?.status === "completed" ? "pointer" : "default",
+						? `hsla(${getHabitThemeColor(props.color)},1)`
+						: `hsla(${getHabitThemeColor(props.color)},0.05)`,
+				cursor: commits()?.status === "completed" ? "pointer" : "default",
+				transition: "background-color 1s",
 				border:
 					settingsStore.settings.highlight_current_day &&
 					isToday(props.date) &&
@@ -31,7 +39,7 @@ export default function Node(props: NodeProps) {
 						: "none",
 			}}
 			data-date={props.date}
-			class="size-3 rounded-[2px] opacity-30"
+			class="size-3 rounded-[4px]"
 		/>
 	);
 }

@@ -135,17 +135,14 @@ export default function Timeline(props: Props) {
 						<div class="mx-auto flex flex-nowrap justify-between">
 							<For each={day}>
 								{(date) => {
-									const thisDatesCommit = commits().find(
-										(commit) => commit.created === date,
-									);
 									return (
 										<Switch>
-											<Match when={commits().length}>
+											<Match when={commits().length > 0}>
 												<Node
 													newCommit={newCommit}
 													habitID={props.habit.id}
 													date={date}
-													commit={thisDatesCommit}
+													commits={commits()}
 													color={props.habit.color}
 												/>
 											</Match>
@@ -154,7 +151,7 @@ export default function Timeline(props: Props) {
 													newCommit={newCommit}
 													habitID={props.habit.id}
 													date={date}
-													commit={undefined}
+													commits={undefined}
 													color={props.habit.color}
 												/>
 											</Match>
